@@ -1,0 +1,36 @@
+﻿@model WorkFromHomeEmailGenerator.Models.DaysModel
+
+<style>
+	.mid-title {
+		font-weight: bold;
+	}
+</style>
+
+@foreach (var day in Model.Days)
+{
+	<h3>@day.Date.DayOfWeek @day.Date.Day @day.Date.ToString("MMMM")</h3>
+	<div class="mid-title">hours:</div>
+	<ul>
+		@foreach (var range in day.Hours)
+		{
+			<li>@range.Start.ToShortTimeString() => @range.End.ToShortTimeString()</li>
+		}
+	</ul>
+	<div class="mid-title">work:</div>
+	if (day.ASIPortal.HasWork)
+	{
+		@RenderProject(day.ASIPortal, "ASI Portal")
+	}
+	if (day.TSNPortal.HasWork)
+	{
+		@RenderProject(day.TSNPortal, "TSN Portal")
+	}
+}
+
+@helper RenderProject(WorkProject project, string projectName)
+{
+	<div>
+		<i>@projectName</i> =>
+		@project.GetMyShit()
+	</div>
+}

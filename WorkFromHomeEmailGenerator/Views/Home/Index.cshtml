@@ -1,0 +1,87 @@
+﻿@{
+	ViewBag.Title = "Go!";
+}
+
+<script src="~/Scripts/angular.min.js"></script>
+<script src="~/Scripts/angular-ui/ui-bootstrap-tpls.min.js"></script>
+<script>
+	function Day() {
+		this.date = '';
+		this.hours = [];
+		this.ASIPortal = {
+			bugs: [],
+			tasks: [],
+			changeSets: []
+		};
+		this.TSNPortal = {
+			bugs: [],
+			tasks: [],
+			changeSets: []
+		};
+	};
+
+	var app = angular.module("app", ['ui.bootstrap']);
+	app.controller("MainController", function ($scope, $http) {
+		var firstDay = new Day();
+		$scope.model = [firstDay];
+
+		$scope.addADay = function () {
+			$scope.model.push(new Day());
+		}
+
+		$scope.addRange = function (day) {
+			day.hours.push({});
+		}
+
+		$scope.submit = function () {
+			$http.post("@Url.Action("Go")", { days: $scope.model })
+				.then(function () {
+					alert("done!");
+				});
+		}
+	});
+</script>
+
+<h1>Go!</h1>
+
+<div ng-app="app" ng-controller="MainController">
+	<div ng-repeat="day in model">
+		<div>
+			<h3>Date: <small> {{day.date | date:'fullDate'}} </small></h3>
+			<div>
+				<div style="display:inline-block; min-height:280px;">
+					<div uib-datepicker ng-model="day.date" class="well well-sm"></div>
+				</div>
+			</div>
+		</div>
+		<hr />
+		<div>
+			<h2>Hours</h2>
+			<div ng-repeat="range in day.hours" class="row" style="margin-bottom: 10px">
+				<div class="col-sm-6 col-md-3">
+					<label>Start</label>
+					<div uib-timepicker ng-model="range.start" hour-step="1" minute-step="15" show-meridian="true"></div>
+				</div>
+				<div class="col-sm-6 col-md-3">
+					<label>End</label>
+					<div uib-timepicker ng-model="range.end" hour-step="1" minute-step="15" show-meridian="true"></div>
+				</div>
+			</div>
+			<button ng-click="addRange(day)" class="btn btn-default">add hourly range</button>
+		</div>
+
+		<hr />
+		<div>
+			<h2>ASI Portal</h2>
+			<button ng-click="addRange(day)"></button>
+		</div>
+
+		<hr />
+		<div>
+			<h2>TSN Portal</h2>
+		</div>
+	</div>
+
+	<button ng-click="submit()">Go</button>
+</div>
+
