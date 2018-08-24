@@ -1,36 +1,46 @@
-﻿@model WorkFromHomeEmailGenerator.Models.DaysModel
-
-<style>
-	.mid-title {
-		font-weight: bold;
-	}
-</style>
-
-@foreach (var day in Model.Days)
-{
-	<h3>@day.Date.DayOfWeek @day.Date.Day @day.Date.ToString("MMMM")</h3>
-	<div class="mid-title">hours:</div>
-	<ul>
-		@foreach (var range in day.Hours)
-		{
-			<li>@range.Start.ToShortTimeString() => @range.End.ToShortTimeString()</li>
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title></title>
+	<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+	<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+	<style>
+		.mid-title {
+			font-weight: bold;
 		}
-	</ul>
-	<div class="mid-title">work:</div>
-	if (day.ASIPortal.HasWork)
+	</style>
+</head>
+
+<body class="container">
+	@model WorkFromHomeEmailGenerator.Models.DaysModel
+
+	@foreach (var day in Model.Days)
 	{
-		@RenderProject(day.ASIPortal, "ASI Portal")
+		<h3>@day.Date.DayOfWeek @day.Date.Day @day.Date.ToString("MMMM")</h3>
+		<div class="mid-title">hours:</div>
+		<ul>
+			@foreach (var range in day.Hours)
+			{
+				<li>@range.Start.ToShortTimeString() => @range.End.ToShortTimeString()</li>
+			}
+		</ul>
+		<div class="mid-title">work:</div>
+		if (day.ASIPortal.HasWork())
+		{
+			@RenderProject(day.ASIPortal, "ASI Portal")
+		}
+		if (day.TSNPortal.HasWork())
+		{
+			@RenderProject(day.TSNPortal, "TSN Portal")
+		}
 	}
-	if (day.TSNPortal.HasWork)
-	{
-		@RenderProject(day.TSNPortal, "TSN Portal")
-	}
-}
+</body>
+</html>
 
 @helper RenderProject(WorkProject project, string projectName)
 {
 	<div>
 		<i>@projectName</i> =>
-		@project.GetMyShit()
+		@Html.Raw(project.GetMyShit())
 	</div>
 }

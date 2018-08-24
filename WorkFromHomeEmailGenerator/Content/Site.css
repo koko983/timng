@@ -1,24 +1,51 @@
 ﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+	padding-top: 50px;
+	padding-bottom: 20px;
 }
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+	padding-left: 15px;
+	padding-right: 15px;
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
 */
 .dl-horizontal dt {
-    white-space: normal;
+	white-space: normal;
 }
 
 /* Set width on the form input elements since they're 100% wide by default */
 input,
 select,
 textarea {
-    max-width: 280px;
+	max-width: 280px;
+}
+
+.day {
+	border: 1px solid #808080;
+	border-radius: 20px;
+	background-color: rgba(41, 128, 221, 0.20);
+	padding: 20px 50px;
+	margin-bottom: 10px;
+}
+
+.day .day-body{
+	padding-bottom: 40px;
+}
+
+a[data-toggle="collapse"] {
+	display: block;
+}
+
+.block {
+	display: block;
+}
+
+.controls{
+	/*background-color: #fff;*/
+	/*border: 1px solid #808080;*/
+	padding: 5px 0;
+	/*margin-bottom: 10px;*/
 }

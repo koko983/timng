@@ -11,14 +11,6 @@ namespace WorkFromHomeEmailGenerator.Models
 
 		public IEnumerable<Changeset> Changesets { get; set; }
 
-		public bool HasWork
-		{
-			get
-			{
-				return Tasks.Any() || Bugs.Any() || Changesets.Any();
-			}
-		}
-
 		public WorkProject()
 		{
 			Bugs = new HashSet<Bug>();
@@ -42,7 +34,15 @@ namespace WorkFromHomeEmailGenerator.Models
 				strings.Add($"<strong class='text-info'>Changesets</strong> <i>{Changesets.GetItemDescription()}</i>");
 			}
 
-			return string.Join("-", strings);
+			return string.Join(" - ", strings);
+		}
+	}
+
+	public static class WorkProjectExtensions
+	{
+		public static bool HasWork(this WorkProject project)
+		{
+			return project != null && (project.Tasks.Any() || project.Bugs.Any() || project.Changesets.Any());
 		}
 	}
 }

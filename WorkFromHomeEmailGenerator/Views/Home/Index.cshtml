@@ -1,87 +1,120 @@
 ﻿@{
-	ViewBag.Title = "Go!";
+	ViewBag.Title = "Start";
 }
 
 <script src="~/Scripts/angular.min.js"></script>
 <script src="~/Scripts/angular-ui/ui-bootstrap-tpls.min.js"></script>
-<script>
-	function Day() {
-		this.date = '';
-		this.hours = [];
-		this.ASIPortal = {
-			bugs: [],
-			tasks: [],
-			changeSets: []
-		};
-		this.TSNPortal = {
-			bugs: [],
-			tasks: [],
-			changeSets: []
-		};
-	};
+<script src="~/Scripts/app/index.js"></script>
+@section scripts
+{
+	<script>
+		$(function () {
+			$("body").on("hide.bs.collapse", ".day-body", function () {
+				$(this).closest(".day").find(".collapser-btn").html('<span class="glyphicon glyphicon-collapse-down"></span>');
+			});
 
-	var app = angular.module("app", ['ui.bootstrap']);
-	app.controller("MainController", function ($scope, $http) {
-		var firstDay = new Day();
-		$scope.model = [firstDay];
+			$("body").on("show.bs.collapse", ".day-body", function () {
+				$(this).closest(".day").find(".collapser-btn").html('<span class="glyphicon glyphicon-collapse-up"></span>');
+			});
+		})
+	</script>
+}
 
-		$scope.addADay = function () {
-			$scope.model.push(new Day());
-		}
-
-		$scope.addRange = function (day) {
-			day.hours.push({});
-		}
-
-		$scope.submit = function () {
-			$http.post("@Url.Action("Go")", { days: $scope.model })
-				.then(function () {
-					alert("done!");
-				});
-		}
-	});
-</script>
-
-<h1>Go!</h1>
+<h1 style="margin: 30px 0">Generate email</h1>
 
 <div ng-app="app" ng-controller="MainController">
-	<div ng-repeat="day in model">
-		<div>
-			<h3>Date: <small> {{day.date | date:'fullDate'}} </small></h3>
-			<div>
-				<div style="display:inline-block; min-height:280px;">
-					<div uib-datepicker ng-model="day.date" class="well well-sm"></div>
+	<form ng-submit="submit()">
+
+		<div ng-repeat="day in model track by $index" class="day">
+			<div class="controls">
+				<a href="#day{{$index}}" data-toggle="collapse" class="btn btn-default collapser-btn" style="display: inline-block">
+					<span class="glyphicon glyphicon-collapse-down"></span>
+				</a>
+				<span class="text-danger"> {{day.date | date:'fullDate'}} </span>
+			</div>
+
+			<div id="day{{$index}}" class="day-body collapse in">
+				<div class="panel panel-warning">
+					<div class="panel-heading">
+						<h3 class="panel-title">
+							<a data-toggle="collapse" href="#date{{$index}}">
+								Date: <span class="text-danger"> {{day.date | date:'fullDate'}} </span>
+							</a>
+						</h3>
+					</div>
+
+					<div id="date{{$index}}" class="panel-collapse collapse in">
+						<div class="panel-body">
+							<div style="display:inline-block;">
+								<div uib-datepicker ng-model="day.date" class="well well-sm"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<hr />
+
+
+				<div class="panel panel-warning">
+					<div class="panel-heading">
+						<h3 class="panel-title">
+							<a data-toggle="collapse" href="#hours{{$index}}">Hours</a>
+						</h3>
+					</div>
+
+					<div id="hours{{$index}}" class="panel-collapse collapse">
+						<div class="panel-body">
+							<div ng-repeat="range in day.hours" class="row" style="margin-bottom: 10px">
+								<div class="col-sm-6 col-md-3">
+									<label>Start</label>
+									<div uib-timepicker ng-model="range.start" ng-change="adjustRangeEnd(range)" hour-step="1" minute-step="15" show-meridian="true"></div>
+								</div>
+								<div class="col-sm-6 col-md-3">
+									<label>End</label>
+									<div uib-timepicker ng-model="range.end" ng-change="updateLastDate(day, range.end)" hour-step="1" minute-step="15" show-meridian="true"></div>
+								</div>
+							</div>
+							<a href="javascript:void(0)" ng-click="addRange(day)" class="btn btn-default">add hourly range</a>
+						</div>
+					</div>
+				</div>
+				<hr />
+
+
+				<project info="day.ASIPortal" adder="addWorkItem" work-options="workOptions" p-name="'ASI Portal'" day-index="{{$index}}"></project>
+				<hr />
+
+
+				<project info="day.TSNPortal" adder="addWorkItem" work-options="workOptions" p-name="'TSN Portal'"></project>
+				<hr />
+
+
+				<div>
+					<h3>Day summary : {{day.date | date}} </h3>
+
+					<div>
+						<div>
+							<strong>hours</strong>
+							<ul>
+								<li ng-repeat="range in day.hours">
+									{{range.start | date:"shortTime"}} => {{range.end | date:"shortTime"}}
+								</li>
+							</ul>
+						</div>
+						<div>
+							<strong>work</strong>
+							<project-display info="day.ASIPortal" p-name="'ASI Portal'"></project-display>
+							<project-display info="day.TSNPortal" p-name="'TSN Portal'"></project-display>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
-		<hr />
-		<div>
-			<h2>Hours</h2>
-			<div ng-repeat="range in day.hours" class="row" style="margin-bottom: 10px">
-				<div class="col-sm-6 col-md-3">
-					<label>Start</label>
-					<div uib-timepicker ng-model="range.start" hour-step="1" minute-step="15" show-meridian="true"></div>
-				</div>
-				<div class="col-sm-6 col-md-3">
-					<label>End</label>
-					<div uib-timepicker ng-model="range.end" hour-step="1" minute-step="15" show-meridian="true"></div>
-				</div>
-			</div>
-			<button ng-click="addRange(day)" class="btn btn-default">add hourly range</button>
-		</div>
 
-		<hr />
-		<div>
-			<h2>ASI Portal</h2>
-			<button ng-click="addRange(day)"></button>
+		<div class="text-right" style="margin: 10px 0 20px">
+			<a href="javascript:void(0)" ng-click="addADay()" class="btn btn-info">Add day</a>
 		</div>
-
-		<hr />
-		<div>
-			<h2>TSN Portal</h2>
+		<div class="text-center">
+			<input type="submit" value="Go!" class="btn btn-primary btn-lg" />
 		</div>
-	</div>
-
-	<button ng-click="submit()">Go</button>
+	</form>
 </div>
-

@@ -1,0 +1,34 @@
+﻿<div class="panel panel-warning">
+	<div class="panel-heading">
+		<h2 class="panel-title">
+			<a data-toggle="collapse" href="#project_{{projectName.replace(' ', '-')}}_{{dayIndex}}">{{projectName}}</a>
+		</h2>
+	</div>
+
+	<div id="project_{{projectName.replace(' ', '-')}}_{{dayIndex}}" class="panel-collapse collapse">
+		<div class="panel-body">
+			<label>Tasks</label>
+			<ul>
+				<li ng-repeat="task in project.tasks">{{task.number}}</li>
+			</ul>
+			<label>Bugs</label>
+			<ul>
+				<li ng-repeat="task in project.bugs">{{task.number}}</li>
+			</ul>
+			<label>Changesets</label>
+			<ul>
+				<li ng-repeat="task in project.changesets">{{task.number}}</li>
+			</ul>
+
+			<a href="javascript:void(0)" ng-click="project.workOptions=true" class="btn btn-default">Add work item</a>
+			
+			<div ng-show="project.workOptions" class="form-inline" style="margin-top: 20px">
+				<label>Type</label>
+				<select ng-model="project.currentWorkItem.type" ng-options="x for x in workOptions" class="form-control"></select>
+				<label>Number</label>
+				<input ng-model="project.currentWorkItem.number" class="form-control" />
+				<a href="javascript:void(0)" ng-click="addWorkItem(project)" class="btn btn-default">Add</a>
+			</div>
+		</div>
+	</div>
+</div>

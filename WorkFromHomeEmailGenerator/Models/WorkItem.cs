@@ -12,7 +12,7 @@ namespace WorkFromHomeEmailGenerator.Models
 	{
 		public static string GetItemDescription(this IEnumerable<WorkItem> workItems)
 		{
-			return string.Join(",", workItems.Select(t => t.Number.ToString()));
+			return string.Join(", ", workItems.Select(t => t.Number.ToString()));
 		}
 	}
 }

@@ -1,0 +1,29 @@
+﻿<div>
+	<i>{{projectName}}: </i>
+	<span ng-show="project.tasks.length">
+		<strong class="text-success">Tasks:</strong>
+		<i>
+			<span ng-repeat="task in project.tasks">
+				{{task.number}}{{$last?'':', '}}
+			</span>
+		</i>
+	</span>
+
+	<span ng-show="project.bugs.length">
+		<strong class="text-danger">Bugs:</strong>
+		<i>
+			<span ng-repeat="task in project.bugs">
+				{{task.number}}{{$last?'':', '}}
+			</span>
+		</i>
+	</span>
+
+	<span ng-show="project.changesets.length">
+		<strong class="text-info">Changesets:</strong>
+		<i>
+			<span ng-repeat="task in project.changesets">
+				{{task.number}}{{$last?'':', '}}
+			</span>
+		</i>
+	</span>
+</div>
