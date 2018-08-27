@@ -23,15 +23,15 @@ namespace WorkFromHomeEmailGenerator.Models
 			var strings = new List<string>();
 			if (Tasks.Any())
 			{
-				strings.Add($"<strong class='text-success'>Tasks</strong> <i>{Tasks.GetItemDescription()}</i>");
+				strings.Add($"<strong class='text-success'>Tasks {Tasks.GetItemDescription()}</strong>");
 			}
 			if (Bugs.Any())
 			{
-				strings.Add($"<strong class='text-danger'>Bugs</strong> <i>{Bugs.GetItemDescription()}</i>");
+				strings.Add($"<strong class='text-danger'>Bugs {Bugs.GetItemDescription()}</strong>");
 			}
 			if (Changesets.Any())
 			{
-				strings.Add($"<strong class='text-info'>Changesets</strong> <i>{Changesets.GetItemDescription()}</i>");
+				strings.Add($"<strong class='text-info'>Changesets {Changesets.GetItemDescription()}</strong>");
 			}
 
 			return string.Join(" - ", strings);
