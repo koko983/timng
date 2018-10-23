@@ -22,10 +22,12 @@ namespace WorkFromHomeEmailGenerator.Controllers
 			var output = RenderPartialViewToString("EmailTemplate", model);
 			var html = new HtmlDocument();
 			html.LoadHtml(output);
-			var virtualLocation = $"/Content/{DateTime.Now.ToFileTime()}_generatedEmail.html";
-			html.Save(Server.MapPath(virtualLocation));
+			var virtualLocation = "/Content/Emails";
+			var virtualPath = $"{virtualLocation}/{DateTime.Now.ToFileTime()}_generatedEmail.html";
+			Directory.CreateDirectory(Server.MapPath(virtualLocation));
+			html.Save(Server.MapPath(virtualPath));
 
-			return Json(new { success = true, place = virtualLocation });
+			return Json(new { success = true, place = virtualPath });
 		}
 
 		private string RenderPartialViewToString(string viewName, object model)
