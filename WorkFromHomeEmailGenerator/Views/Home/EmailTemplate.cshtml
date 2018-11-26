@@ -1,4 +1,7 @@
 ﻿@model WorkFromHomeEmailGenerator.Models.DaysModel
+		@{ 
+			var now = DateTime.Now;
+		}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,10 +23,13 @@
 	<h2>
 		My working hours and tasks for @DateTime.Now.ToString("MMMM yyyy")
 	</h2>
+	<h1>My working hours and tasks for @now.ToString("MMMM") @now.Year</h1>
+	SA,
+	This is the detail of my working hours for @now.ToString("MMMM") @now.Year
 
 	@foreach (var day in Model.Days)
 	{
-		<h3>@day.Date.DayOfWeek @day.Date.Day @day.Date.ToString("MMMM")</h3>
+		<h4>@day.Date.DayOfWeek @day.Date.Day @day.Date.ToString("MMMM")</h4>
 		<div class="mid-title">hours:</div>
 		<ul>
 			@foreach (var range in day.Hours)
