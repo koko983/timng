@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@model WorkFromHomeEmailGenerator.Models.DaysModel
+<!DOCTYPE html>
 <html lang="en">
 <head>
 	<title></title>
@@ -12,7 +13,13 @@
 </head>
 
 <body class="container">
-	@model WorkFromHomeEmailGenerator.Models.DaysModel
+	<div class="alert alert-info">
+		<b>Sum: </b> @Model.Sum
+	</div>
+
+	<h2>
+		My working hours and tasks for @DateTime.Now.ToString("MMMM yyyy")
+	</h2>
 
 	@foreach (var day in Model.Days)
 	{

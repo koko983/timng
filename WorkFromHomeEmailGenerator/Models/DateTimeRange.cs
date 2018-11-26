@@ -7,5 +7,7 @@ namespace WorkFromHomeEmailGenerator.Models
 		public DateTime Start { get; set; }
 
 		public DateTime End { get; set; }
+
+		public double TotalMinutes => (End - Start).TotalMinutes;
 	}
 }

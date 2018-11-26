@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace WorkFromHomeEmailGenerator.Models
 {
@@ -12,5 +13,7 @@ namespace WorkFromHomeEmailGenerator.Models
 		public WorkProject ASIPortal { get; set; }
 
 		public WorkProject TSNPortal { get; set; }
+
+		public double Sum => Hours.Sum(r => r.TotalMinutes);
 	}
 }
